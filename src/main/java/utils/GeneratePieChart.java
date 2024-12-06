@@ -35,15 +35,16 @@ public class GeneratePieChart {
             // Summarize data for all environments
             Map<String, Double> appCpuTotals = new HashMap<>();
             Map<String, Double> appMemoryTotals = new HashMap<>();
+            Map<String, Double> appClusterTotals = new HashMap<>();
 
-            aggregateResourceData(resourceData, appCpuTotals, appMemoryTotals);
+            aggregateResourceData(resourceData, appCpuTotals, appMemoryTotals,appClusterTotals);
 
             // Ensure the output directory exists
             createOutputDirectory();
 
             // Create pie charts for each environment and summary charts for all environments
             createChartsForEnvironments(resourceData);
-            createSummaryCharts(appCpuTotals, appMemoryTotals);
+            createSummaryCharts(appCpuTotals, appMemoryTotals,appClusterTotals);
 
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
@@ -56,14 +57,16 @@ public class GeneratePieChart {
         });
     }
 
-    private static void aggregateResourceData(List<Map<String, String>> resourceData, Map<String, Double> appCpuTotals, Map<String, Double> appMemoryTotals) {
+    private static void aggregateResourceData(List<Map<String, String>> resourceData, Map<String, Double> appCpuTotals, Map<String, Double> appMemoryTotals,Map<String, Double> appClusterTotals) {
         for (Map<String, String> entry : resourceData) {
             String appName = entry.get("app");
             double cpuPercentage = parsePercentage(entry.get("cpuPercentage"));
             double memoryPercentage = parsePercentage(entry.get("memoryPercentage"));
+            double clusterPercentage = parsePercentage(entry.get("clusterUsage"));
 
             appCpuTotals.merge(appName, cpuPercentage, Double::sum);
             appMemoryTotals.merge(appName, memoryPercentage, Double::sum);
+            appClusterTotals.merge(appName, clusterPercentage, Double::sum);
         }
     }
 
@@ -79,32 +82,31 @@ public class GeneratePieChart {
                 .collect(Collectors.groupingBy(entry -> entry.get("env")));
 
         envGroupedData.forEach((env, envData) -> {
-            createPieChart(env, "cpuPercentage", "CPU Usage", envData);
-            createPieChart(env, "memoryPercentage", "Memory Usage", envData);
+            createPieChartPerEnv(env, "cpuPercentage", "CPU Usage", envData);
+            createPieChartPerEnv(env, "memoryPercentage", "Memory Usage", envData);
         });
     }
 
-    private static void createSummaryCharts(Map<String, Double> appCpuTotals, Map<String, Double> appMemoryTotals) {
+    private static void createSummaryCharts(Map<String, Double> appCpuTotals, Map<String, Double> appMemoryTotals,Map<String, Double> appClusterTotals) {
         createPieChart("cpuPercentage", "CPU Usage for All Environments", appCpuTotals);
         createPieChart("memoryPercentage", "Memory Usage for All Environments", appMemoryTotals);
+        createPieChart("clusterUsage", "Cluster Usage for All Environments", appClusterTotals);
     }
 
     private static void createPieChart(String key, String chartTitle, Map<String, Double> data) {
         try {
             DefaultPieDataset dataset = new DefaultPieDataset();
             data.forEach(dataset::setValue);
-
-            // Create and customize the chart
+            double total = data.values().stream().mapToDouble(Double::doubleValue).sum();
             JFreeChart chart = ChartFactory.createPieChart(
-                    chartTitle + " (" + "All Environments" + ")",
+                    chartTitle + " - Total: " + String.format("%.2f", total) + "%",
                     dataset,
                     true,
                     true,
                     false
             );
-            customizePieChart(chart);
 
-            // Save the chart as PNG
+            customizePieChart(chart);
             String fileName = key + "_pie_chart_" + "All Environments".replaceAll("[^a-zA-Z0-9]", "_") + ".png";
             ChartUtils.saveChartAsPNG(Paths.get(GeneratePieChart.DEFAULT_OUTPUT_PATH, fileName).toFile(), chart, 1400, 1000);
             System.out.println(chartTitle + " chart for '" + "All Environments" + "' saved at: " + GeneratePieChart.DEFAULT_OUTPUT_PATH);
@@ -114,7 +116,8 @@ public class GeneratePieChart {
         }
     }
 
-    private static void createPieChart(String envOrTitle, String key, String chartTitle, List<Map<String, String>> envData) {
+
+    private static void createPieChartPerEnv(String envOrTitle, String key, String chartTitle, List<Map<String, String>> envData) {
         try {
             DefaultPieDataset dataset = new DefaultPieDataset();
             double total = 0.0; // Variable to hold the total of all apps
