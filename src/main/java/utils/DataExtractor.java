@@ -123,6 +123,7 @@ public class DataExtractor {
             }
         }
         ReportWriter.createDataFile(outputStrings);
+        ReportWriter.jsonToCsv();
 
     }
 
