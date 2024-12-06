@@ -1,0 +1,396 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    configmap.reloader.stakater.com/reload: app-config2
+    deployment.kubernetes.io/revision: '121'
+    field.cattle.io/publicEndpoints: >-
+      [{"addresses":["172.16.33.68"],"port":443,"protocol":"HTTPS","serviceName":"edgconsumeragg-system-dev:edgconsumeraggb-svc","ingressName":"edgconsumeragg-system-dev:edgconsumeraggb","hostname":"edgconsumeraggb-dev.cms-k8s-dev.fnb.co.za","path":"/","allNodes":true}]
+    kubectl.kubernetes.io/last-applied-configuration: >-
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"configmap.reloader.stakater.com/reload":"app-config2","secret.reloader.stakater.com/reload":"keystores-secrets,keytab-conf"},"labels":{"app":"edgconsumeraggb","environment":"dev"},"name":"edgconsumeraggb-deploy","namespace":"edgconsumeragg-system-dev"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"edgconsumeraggb"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"edgconsumeraggb","environment":"dev"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r1"]}]},"weight":50},{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r3"]}]},"weight":50},{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r4"]}]},"weight":50}],"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r1","r3","r4"]}]}]}},"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"app","operator":"In","values":["edgconsumeraggb"]}]},"topologyKey":"kubernetes.io/hostname"},"weight":100}]}},"automountServiceAccountToken":false,"containers":[{"envFrom":null,"image":"cms-rpunexus.fnb.co.za/cms/edg-consumer:Feb-2025-release-prototype-7","imagePullPolicy":"Always","name":"edgconsumeraggb","ports":[{"containerPort":8080}],"resources":{"limits":{"cpu":"300m","memory":"512Mi"},"requests":{"cpu":"300m","memory":"512Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":false,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000},"volumeMounts":[{"mountPath":"/home/java/config","name":"app-config2","readOnly":true},{"mountPath":"/home/java/tmp","name":"keytab-conf","readOnly":true},{"mountPath":"/home/java/keys","name":"keystores-secrets","readOnly":true}]}],"imagePullSecrets":[{"name":"harborcreds"}],"securityContext":{"fsGroup":1000,"runAsGroup":1000,"runAsUser":1000},"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app":"edgconsumeraggb"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app":"edgconsumeraggb"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}],"volumes":[{"configMap":{"name":"app-config2"},"name":"app-config2"},{"name":"keystores-secrets","secret":{"secretName":"keystores-secrets"}},{"name":"keytab-conf","secret":{"secretName":"keytab-conf"}},{"name":"keystores-secrets","secret":{"secretName":"keystores-secrets"}}]}}}}
+    secret.reloader.stakater.com/reload: keystores-secrets,keytab-conf
+  creationTimestamp: '2024-06-25T12:29:12Z'
+  generation: 148
+  labels:
+    app: edgconsumeraggb
+    environment: dev
+  managedFields:
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:configmap.reloader.stakater.com/reload: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+            f:secret.reloader.stakater.com/reload: {}
+          f:labels:
+            .: {}
+            f:app: {}
+            f:environment: {}
+        f:spec:
+          f:progressDeadlineSeconds: {}
+          f:replicas: {}
+          f:revisionHistoryLimit: {}
+          f:selector: {}
+          f:strategy:
+            f:rollingUpdate:
+              .: {}
+              f:maxSurge: {}
+              f:maxUnavailable: {}
+            f:type: {}
+          f:template:
+            f:metadata:
+              f:labels:
+                .: {}
+                f:app: {}
+                f:environment: {}
+            f:spec:
+              f:affinity:
+                .: {}
+                f:nodeAffinity:
+                  .: {}
+                  f:preferredDuringSchedulingIgnoredDuringExecution: {}
+                  f:requiredDuringSchedulingIgnoredDuringExecution: {}
+                f:podAntiAffinity:
+                  .: {}
+                  f:preferredDuringSchedulingIgnoredDuringExecution: {}
+              f:automountServiceAccountToken: {}
+              f:containers:
+                k:{"name":"edgconsumeraggb"}:
+                  .: {}
+                  f:image: {}
+                  f:imagePullPolicy: {}
+                  f:name: {}
+                  f:ports:
+                    .: {}
+                    k:{"containerPort":8080,"protocol":"TCP"}:
+                      .: {}
+                      f:containerPort: {}
+                      f:protocol: {}
+                  f:resources:
+                    .: {}
+                    f:limits:
+                      .: {}
+                      f:cpu: {}
+                      f:memory: {}
+                    f:requests:
+                      .: {}
+                      f:cpu: {}
+                      f:memory: {}
+                  f:securityContext:
+                    .: {}
+                    f:allowPrivilegeEscalation: {}
+                    f:capabilities:
+                      .: {}
+                      f:drop: {}
+                    f:privileged: {}
+                    f:readOnlyRootFilesystem: {}
+                    f:runAsGroup: {}
+                    f:runAsNonRoot: {}
+                    f:runAsUser: {}
+                  f:terminationMessagePath: {}
+                  f:terminationMessagePolicy: {}
+                  f:volumeMounts:
+                    .: {}
+                    k:{"mountPath":"/home/java/config"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+                    k:{"mountPath":"/home/java/keys"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+                    k:{"mountPath":"/home/java/tmp"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+              f:dnsPolicy: {}
+              f:imagePullSecrets:
+                .: {}
+                k:{"name":"harborcreds"}: {}
+              f:restartPolicy: {}
+              f:schedulerName: {}
+              f:securityContext:
+                .: {}
+                f:fsGroup: {}
+                f:runAsGroup: {}
+                f:runAsUser: {}
+              f:terminationGracePeriodSeconds: {}
+              f:topologySpreadConstraints:
+                .: {}
+                k:{"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}:
+                  .: {}
+                  f:labelSelector: {}
+                  f:maxSkew: {}
+                  f:topologyKey: {}
+                  f:whenUnsatisfiable: {}
+                k:{"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"}:
+                  .: {}
+                  f:labelSelector: {}
+                  f:maxSkew: {}
+                  f:topologyKey: {}
+                  f:whenUnsatisfiable: {}
+              f:volumes:
+                .: {}
+                k:{"name":"app-config2"}:
+                  .: {}
+                  f:configMap:
+                    .: {}
+                    f:defaultMode: {}
+                    f:name: {}
+                  f:name: {}
+                k:{"name":"keystores-secrets"}:
+                  .: {}
+                  f:name: {}
+                  f:secret:
+                    .: {}
+                    f:defaultMode: {}
+                    f:secretName: {}
+                k:{"name":"keytab-conf"}:
+                  .: {}
+                  f:name: {}
+                  f:secret:
+                    .: {}
+                    f:defaultMode: {}
+                    f:secretName: {}
+      manager: OpenAPI-Generator
+      operation: Update
+      time: '2024-11-11T09:30:48Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:spec:
+          f:template:
+            f:spec:
+              f:containers:
+                k:{"name":"edgconsumeraggb"}:
+                  f:env:
+                    .: {}
+                    k:{"name":"STAKATER_APP_CONFIG2_CONFIGMAP"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"STAKATER_KEYSTORES_SECRETS_SECRET"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"STAKATER_KEYTAB_CONF_SECRET"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+      manager: Reloader
+      operation: Update
+      time: '2024-11-11T09:39:20Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:field.cattle.io/publicEndpoints: {}
+      manager: agent
+      operation: Update
+      time: '2024-11-15T20:54:51Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:deployment.kubernetes.io/revision: {}
+        f:status:
+          f:conditions:
+            .: {}
+            k:{"type":"Available"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+            k:{"type":"Progressing"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+          f:observedGeneration: {}
+          f:replicas: {}
+          f:unavailableReplicas: {}
+          f:updatedReplicas: {}
+      manager: kube-controller-manager
+      operation: Update
+      subresource: status
+      time: '2024-11-28T12:19:57Z'
+  name: edgconsumeraggb-deploy
+  namespace: edgconsumeragg-system-dev
+  resourceVersion: '634622014'
+  uid: 7d976a51-743e-415a-bb5f-9c6de8045366
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: edgconsumeraggb
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: edgconsumeraggb
+        environment: dev
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r1
+              weight: 50
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r3
+              weight: 50
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r4
+              weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r1
+                      - r3
+                      - r4
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - edgconsumeraggb
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      automountServiceAccountToken: false
+      containers:
+        - env:
+            - name: STAKATER_KEYTAB_CONF_SECRET
+              value: 84963f64735fb070fae242e08ac0fc5874b1ace3
+            - name: STAKATER_APP_CONFIG2_CONFIGMAP
+              value: 7f3e0778c12bf85039ca1cf9da0fbcdc30c8a55d
+            - name: STAKATER_KEYSTORES_SECRETS_SECRET
+              value: 0a256fbe9bc8a8f20396b3145cdff4b4fb1d270b
+          image: cms-rpunexus.fnb.co.za/cms/edg-consumer:Feb-2025-release-prototype-7
+          imagePullPolicy: Always
+          name: edgconsumeraggb
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 300m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /home/java/config
+              name: app-config2
+              readOnly: true
+            - mountPath: /home/java/tmp
+              name: keytab-conf
+              readOnly: true
+            - mountPath: /home/java/keys
+              name: keystores-secrets
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: harborcreds
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+      terminationGracePeriodSeconds: 30
+      topologySpreadConstraints:
+        - labelSelector:
+            matchLabels:
+              app: edgconsumeraggb
+          maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+        - labelSelector:
+            matchLabels:
+              app: edgconsumeraggb
+          maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: app-config2
+          name: app-config2
+        - name: keystores-secrets
+          secret:
+            defaultMode: 420
+            secretName: keystores-secrets
+        - name: keytab-conf
+          secret:
+            defaultMode: 420
+            secretName: keytab-conf
+status:
+  conditions:
+    - lastTransitionTime: '2024-06-25T12:58:51Z'
+      lastUpdateTime: '2024-11-11T09:39:23Z'
+      message: >-
+        ReplicaSet "edgconsumeraggb-deploy-cd57897fb" has successfully
+        progressed.
+      reason: NewReplicaSetAvailable
+      status: 'True'
+      type: Progressing
+    - lastTransitionTime: '2024-11-28T12:19:57Z'
+      lastUpdateTime: '2024-11-28T12:19:57Z'
+      message: Deployment does not have minimum availability.
+      reason: MinimumReplicasUnavailable
+      status: 'False'
+      type: Available
+  observedGeneration: 148
+  replicas: 1
+  unavailableReplicas: 1
+  updatedReplicas: 1

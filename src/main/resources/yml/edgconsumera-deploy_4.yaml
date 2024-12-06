@@ -1,0 +1,490 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    configmap.reloader.stakater.com/reload: app-config
+    deployment.kubernetes.io/revision: '136'
+    field.cattle.io/publicEndpoints: >-
+      [{"addresses":["172.16.33.68"],"port":443,"protocol":"HTTPS","serviceName":"edgconsumer-system-stress:edgconsumera-svc","ingressName":"edgconsumer-system-stress:edgconsumera","hostname":"edg-stress.cms-k8s-dev.fnb.co.za","path":"/edg/bureau/retrieve-consumer-bureau-profile","allNodes":true}]
+    kubectl.kubernetes.io/last-applied-configuration: >-
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"configmap.reloader.stakater.com/reload":"app-config","secret.reloader.stakater.com/reload":"keytab-conf,keystores-secrets"},"labels":{"app":"edgconsumera","environment":"stress"},"name":"edgconsumera-deploy","namespace":"edgconsumer-system-stress"},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"edgconsumera"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"edgconsumera","environment":"stress"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r1"]}]},"weight":50},{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r3"]}]},"weight":50},{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r4"]}]},"weight":50}],"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r1","r3","r4"]}]}]}},"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"app","operator":"In","values":["edgconsumera"]}]},"topologyKey":"kubernetes.io/hostname"},"weight":100}]}},"automountServiceAccountToken":false,"containers":[{"env":[{"name":"JAVA_TOOL_OPTIONS","value":"-javaagent:/opt/appdynamics/javaagent.jar
+      -Dappdynamics.agent.node.use.as.ephemeral=true"},{"name":"APPDYNAMICS_AGENT_TIER_NAME","value":"edg-consumer-stress"},{"name":"APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY","valueFrom":{"secretKeyRef":{"key":"access-key","name":"appd-agent-secret"}}}],"envFrom":[{"configMapRef":{"name":"edg-consumer-stress-appd-configmap"}}],"image":"cms-rpunexus.fnb.co.za/cms/edg-consumer:Feb-2025-release-prototype-maxActive-1","imagePullPolicy":"Always","name":"edgconsumera","ports":[{"containerPort":8080}],"resources":{"limits":{"cpu":"1500m","memory":"1536Mi"},"requests":{"cpu":"1500m","memory":"1536Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":false,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000},"volumeMounts":[{"mountPath":"/home/java/config","name":"app-config","readOnly":true},{"mountPath":"/home/java/tmp","name":"keytab-conf","readOnly":true},{"mountPath":"/home/java/keys","name":"keystores-secrets","readOnly":true},{"mountPath":"/opt/appdynamics","name":"appd-agent-repo"}]}],"imagePullSecrets":[{"name":"harborcreds"}],"initContainers":[{"command":["cp","-r","/opt/appdynamics/.","/opt/temp"],"image":"cms-rpunexus.fnb.co.za/appdynamics/java-agent:24.5.0.36037","name":"appd-agent","volumeMounts":[{"mountPath":"/opt/temp","name":"appd-agent-repo"}]}],"securityContext":{"fsGroup":1000,"runAsGroup":1000,"runAsUser":1000},"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app":"edgconsumera"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app":"edgconsumera"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}],"volumes":[{"emptyDir":{},"name":"appd-agent-repo"},{"configMap":{"name":"app-config"},"name":"app-config"},{"name":"keytab-conf","secret":{"secretName":"keytab-conf"}},{"name":"keystores-secrets","secret":{"secretName":"keystores-secrets"}}]}}}}
+    secret.reloader.stakater.com/reload: keytab-conf,keystores-secrets
+  creationTimestamp: '2024-04-03T10:59:45Z'
+  generation: 182
+  labels:
+    app: edgconsumera
+    environment: stress
+  managedFields:
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:field.cattle.io/publicEndpoints: {}
+        f:spec:
+          f:template:
+            f:metadata:
+              f:namespace: {}
+            f:spec:
+              f:containers:
+                k:{"name":"edgconsumera"}:
+                  f:ports:
+                    k:{"containerPort":8080,"protocol":"TCP"}:
+                      f:name: {}
+      manager: agent
+      operation: Update
+      time: '2024-11-15T20:55:03Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:configmap.reloader.stakater.com/reload: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+            f:secret.reloader.stakater.com/reload: {}
+          f:labels:
+            .: {}
+            f:app: {}
+            f:environment: {}
+        f:spec:
+          f:progressDeadlineSeconds: {}
+          f:replicas: {}
+          f:revisionHistoryLimit: {}
+          f:selector: {}
+          f:strategy:
+            f:rollingUpdate:
+              .: {}
+              f:maxSurge: {}
+              f:maxUnavailable: {}
+            f:type: {}
+          f:template:
+            f:metadata:
+              f:labels:
+                .: {}
+                f:app: {}
+                f:environment: {}
+            f:spec:
+              f:affinity:
+                .: {}
+                f:nodeAffinity:
+                  .: {}
+                  f:preferredDuringSchedulingIgnoredDuringExecution: {}
+                  f:requiredDuringSchedulingIgnoredDuringExecution: {}
+                f:podAntiAffinity:
+                  .: {}
+                  f:preferredDuringSchedulingIgnoredDuringExecution: {}
+              f:automountServiceAccountToken: {}
+              f:containers:
+                k:{"name":"edgconsumera"}:
+                  .: {}
+                  f:env:
+                    .: {}
+                    k:{"name":"APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY"}:
+                      .: {}
+                      f:name: {}
+                      f:valueFrom:
+                        .: {}
+                        f:secretKeyRef: {}
+                    k:{"name":"APPDYNAMICS_AGENT_TIER_NAME"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"JAVA_TOOL_OPTIONS"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                  f:envFrom: {}
+                  f:image: {}
+                  f:imagePullPolicy: {}
+                  f:name: {}
+                  f:ports:
+                    .: {}
+                    k:{"containerPort":8080,"protocol":"TCP"}:
+                      .: {}
+                      f:containerPort: {}
+                      f:protocol: {}
+                  f:resources:
+                    .: {}
+                    f:limits:
+                      .: {}
+                      f:cpu: {}
+                      f:memory: {}
+                    f:requests:
+                      .: {}
+                      f:cpu: {}
+                      f:memory: {}
+                  f:securityContext:
+                    .: {}
+                    f:allowPrivilegeEscalation: {}
+                    f:capabilities:
+                      .: {}
+                      f:drop: {}
+                    f:privileged: {}
+                    f:readOnlyRootFilesystem: {}
+                    f:runAsGroup: {}
+                    f:runAsNonRoot: {}
+                    f:runAsUser: {}
+                  f:terminationMessagePath: {}
+                  f:terminationMessagePolicy: {}
+                  f:volumeMounts:
+                    .: {}
+                    k:{"mountPath":"/home/java/config"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+                    k:{"mountPath":"/home/java/keys"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+                    k:{"mountPath":"/home/java/tmp"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+                    k:{"mountPath":"/opt/appdynamics"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+              f:dnsPolicy: {}
+              f:imagePullSecrets:
+                .: {}
+                k:{"name":"harborcreds"}: {}
+              f:initContainers:
+                .: {}
+                k:{"name":"appd-agent"}:
+                  .: {}
+                  f:command: {}
+                  f:image: {}
+                  f:imagePullPolicy: {}
+                  f:name: {}
+                  f:resources: {}
+                  f:terminationMessagePath: {}
+                  f:terminationMessagePolicy: {}
+                  f:volumeMounts:
+                    .: {}
+                    k:{"mountPath":"/opt/temp"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+              f:restartPolicy: {}
+              f:schedulerName: {}
+              f:securityContext:
+                .: {}
+                f:fsGroup: {}
+                f:runAsGroup: {}
+                f:runAsUser: {}
+              f:terminationGracePeriodSeconds: {}
+              f:topologySpreadConstraints:
+                .: {}
+                k:{"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}:
+                  .: {}
+                  f:labelSelector: {}
+                  f:maxSkew: {}
+                  f:topologyKey: {}
+                  f:whenUnsatisfiable: {}
+                k:{"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"}:
+                  .: {}
+                  f:labelSelector: {}
+                  f:maxSkew: {}
+                  f:topologyKey: {}
+                  f:whenUnsatisfiable: {}
+              f:volumes:
+                .: {}
+                k:{"name":"app-config"}:
+                  .: {}
+                  f:configMap:
+                    .: {}
+                    f:defaultMode: {}
+                    f:name: {}
+                  f:name: {}
+                k:{"name":"appd-agent-repo"}:
+                  .: {}
+                  f:emptyDir: {}
+                  f:name: {}
+                k:{"name":"keystores-secrets"}:
+                  .: {}
+                  f:name: {}
+                  f:secret:
+                    .: {}
+                    f:defaultMode: {}
+                    f:secretName: {}
+                k:{"name":"keytab-conf"}:
+                  .: {}
+                  f:name: {}
+                  f:secret:
+                    .: {}
+                    f:defaultMode: {}
+                    f:secretName: {}
+      manager: OpenAPI-Generator
+      operation: Update
+      time: '2024-11-19T12:50:20Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:spec:
+          f:template:
+            f:spec:
+              f:containers:
+                k:{"name":"edgconsumera"}:
+                  f:env:
+                    k:{"name":"STAKATER_APP_CONFIG_CONFIGMAP"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"STAKATER_EDG_KAFKA_CONFIGMAP"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"STAKATER_KEYSTORES_SECRETS_SECRET"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"STAKATER_KEYTAB_CONF_SECRET"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+      manager: Reloader
+      operation: Update
+      time: '2024-11-19T13:44:03Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:deployment.kubernetes.io/revision: {}
+        f:status:
+          f:availableReplicas: {}
+          f:conditions:
+            .: {}
+            k:{"type":"Available"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+            k:{"type":"Progressing"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+          f:observedGeneration: {}
+          f:readyReplicas: {}
+          f:replicas: {}
+          f:updatedReplicas: {}
+      manager: kube-controller-manager
+      operation: Update
+      subresource: status
+      time: '2024-11-19T13:44:41Z'
+  name: edgconsumera-deploy
+  namespace: edgconsumer-system-stress
+  resourceVersion: '583043319'
+  uid: 9195ddfa-c237-4da6-8ece-57de04c555f3
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: edgconsumera
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: edgconsumera
+        environment: stress
+      namespace: edgconsumer-system-stress
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r1
+              weight: 50
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r3
+              weight: 50
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r4
+              weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r1
+                      - r3
+                      - r4
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - edgconsumera
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      automountServiceAccountToken: false
+      containers:
+        - env:
+            - name: JAVA_TOOL_OPTIONS
+              value: >-
+                -javaagent:/opt/appdynamics/javaagent.jar
+                -Dappdynamics.agent.node.use.as.ephemeral=true
+            - name: APPDYNAMICS_AGENT_TIER_NAME
+              value: edg-consumer-stress
+            - name: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: access-key
+                  name: appd-agent-secret
+            - name: STAKATER_KEYSTORES_SECRETS_SECRET
+              value: 7a0670974b8866a30be56f85e0b1c2fe6abf5fd6
+            - name: STAKATER_EDG_KAFKA_CONFIGMAP
+              value: ac0e0dd2222c307b7ccb1c7ab5c49a17ad22cc8b
+            - name: STAKATER_APP_CONFIG_CONFIGMAP
+              value: d680454d759bdddb073d40af4a0446e0ecb78832
+            - name: STAKATER_KEYTAB_CONF_SECRET
+              value: 18589d3e4aa106a4e24527b646e8600837189d40
+          envFrom:
+            - configMapRef:
+                name: edg-consumer-stress-appd-configmap
+          image: >-
+            cms-rpunexus.fnb.co.za/cms/edg-consumer:Feb-2025-release-prototype-maxActive-1
+          imagePullPolicy: Always
+          name: edgconsumera
+          ports:
+            - containerPort: 8080
+              name: 8080tcp
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 1500m
+              memory: 1536Mi
+            requests:
+              cpu: 1500m
+              memory: 1536Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /home/java/config
+              name: app-config
+              readOnly: true
+            - mountPath: /home/java/tmp
+              name: keytab-conf
+              readOnly: true
+            - mountPath: /home/java/keys
+              name: keystores-secrets
+              readOnly: true
+            - mountPath: /opt/appdynamics
+              name: appd-agent-repo
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: harborcreds
+      initContainers:
+        - command:
+            - cp
+            - '-r'
+            - /opt/appdynamics/.
+            - /opt/temp
+          image: cms-rpunexus.fnb.co.za/appdynamics/java-agent:24.5.0.36037
+          imagePullPolicy: IfNotPresent
+          name: appd-agent
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /opt/temp
+              name: appd-agent-repo
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+      terminationGracePeriodSeconds: 30
+      topologySpreadConstraints:
+        - labelSelector:
+            matchLabels:
+              app: edgconsumera
+          maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+        - labelSelector:
+            matchLabels:
+              app: edgconsumera
+          maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+      volumes:
+        - emptyDir: {}
+          name: appd-agent-repo
+        - configMap:
+            defaultMode: 420
+            name: app-config
+          name: app-config
+        - name: keytab-conf
+          secret:
+            defaultMode: 420
+            secretName: keytab-conf
+        - name: keystores-secrets
+          secret:
+            defaultMode: 420
+            secretName: keystores-secrets
+status:
+  availableReplicas: 3
+  conditions:
+    - lastTransitionTime: '2024-04-03T10:59:46Z'
+      lastUpdateTime: '2024-11-19T13:44:17Z'
+      message: ReplicaSet "edgconsumera-deploy-7d7898b89b" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: 'True'
+      type: Progressing
+    - lastTransitionTime: '2024-11-19T13:44:41Z'
+      lastUpdateTime: '2024-11-19T13:44:41Z'
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: Available
+  observedGeneration: 182
+  readyReplicas: 3
+  replicas: 3
+  updatedReplicas: 3

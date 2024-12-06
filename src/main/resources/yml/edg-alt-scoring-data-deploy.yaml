@@ -1,0 +1,410 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    configmap.reloader.stakater.com/reload: app-config
+    deployment.kubernetes.io/revision: '39'
+    field.cattle.io/publicEndpoints: >-
+      [{"addresses":["172.16.33.68"],"port":443,"protocol":"HTTPS","serviceName":"edg-alt-scoring-data-system-dev:edgaltscoring-svc","ingressName":"edg-alt-scoring-data-system-dev:edgaltscoring","hostname":"edg-dev.cms-k8s-dev.fnb.co.za","path":"/edg/decisioning/retrieve-alt-scoring-data","allNodes":true}]
+    kubectl.kubernetes.io/last-applied-configuration: >-
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"configmap.reloader.stakater.com/reload":"app-config","secret.reloader.stakater.com/reload":"edgaltscoring,keytab-conf,keystores-secrets"},"labels":{"app":"edgaltscoring","environment":"dev"},"name":"edg-alt-scoring-data-deploy","namespace":"edg-alt-scoring-data-system-dev"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"edgaltscoring"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"edgaltscoring","environment":"dev"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r1"]}]},"weight":50},{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r3"]}]},"weight":50},{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r4"]}]},"weight":50}],"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r1","r3","r4"]}]}]}},"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"app","operator":"In","values":["edgaltscoring"]}]},"topologyKey":"kubernetes.io/hostname"},"weight":100}]}},"automountServiceAccountToken":false,"containers":[{"envFrom":[{"secretRef":{"name":"edgaltscoring"}}],"image":"cms-rpunexus.fnb.co.za/cms/edg-alt-scoring-data:harbourFixes-2","imagePullPolicy":"Always","name":"edgaltscoring","ports":[{"containerPort":8080}],"resources":{"limits":{"cpu":"300m","memory":"512Mi"},"requests":{"cpu":"300m","memory":"512Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":false,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000},"volumeMounts":[{"mountPath":"/home/java/config","name":"app-config","readOnly":true},{"mountPath":"/home/java/tmp","name":"keytab-conf","readOnly":true},{"mountPath":"/home/java/keys","name":"keystores-secrets","readOnly":true}]}],"imagePullSecrets":[{"name":"harborcreds"}],"securityContext":{"fsGroup":1000,"runAsGroup":1000,"runAsUser":1000},"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app":"edgaltscoring"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app":"edgaltscoring"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}],"volumes":[{"configMap":{"name":"app-config"},"name":"app-config"},{"name":"keytab-conf","secret":{"secretName":"keytab-conf"}},{"name":"keystores-secrets","secret":{"secretName":"keystores-secrets"}}]}}}}
+    secret.reloader.stakater.com/reload: edgaltscoring,keytab-conf,keystores-secrets
+  creationTimestamp: '2024-10-17T06:21:24Z'
+  generation: 44
+  labels:
+    app: edgaltscoring
+    environment: dev
+  managedFields:
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:field.cattle.io/publicEndpoints: {}
+      manager: agent
+      operation: Update
+      time: '2024-11-15T20:55:10Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:configmap.reloader.stakater.com/reload: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+            f:secret.reloader.stakater.com/reload: {}
+          f:labels:
+            .: {}
+            f:app: {}
+            f:environment: {}
+        f:spec:
+          f:progressDeadlineSeconds: {}
+          f:replicas: {}
+          f:revisionHistoryLimit: {}
+          f:selector: {}
+          f:strategy:
+            f:rollingUpdate:
+              .: {}
+              f:maxSurge: {}
+              f:maxUnavailable: {}
+            f:type: {}
+          f:template:
+            f:metadata:
+              f:labels:
+                .: {}
+                f:app: {}
+                f:environment: {}
+            f:spec:
+              f:affinity:
+                .: {}
+                f:nodeAffinity:
+                  .: {}
+                  f:preferredDuringSchedulingIgnoredDuringExecution: {}
+                  f:requiredDuringSchedulingIgnoredDuringExecution: {}
+                f:podAntiAffinity:
+                  .: {}
+                  f:preferredDuringSchedulingIgnoredDuringExecution: {}
+              f:automountServiceAccountToken: {}
+              f:containers:
+                k:{"name":"edgaltscoring"}:
+                  .: {}
+                  f:envFrom: {}
+                  f:image: {}
+                  f:imagePullPolicy: {}
+                  f:name: {}
+                  f:ports:
+                    .: {}
+                    k:{"containerPort":8080,"protocol":"TCP"}:
+                      .: {}
+                      f:containerPort: {}
+                      f:protocol: {}
+                  f:resources:
+                    .: {}
+                    f:limits:
+                      .: {}
+                      f:cpu: {}
+                      f:memory: {}
+                    f:requests:
+                      .: {}
+                      f:cpu: {}
+                      f:memory: {}
+                  f:securityContext:
+                    .: {}
+                    f:allowPrivilegeEscalation: {}
+                    f:capabilities:
+                      .: {}
+                      f:drop: {}
+                    f:privileged: {}
+                    f:readOnlyRootFilesystem: {}
+                    f:runAsGroup: {}
+                    f:runAsNonRoot: {}
+                    f:runAsUser: {}
+                  f:terminationMessagePath: {}
+                  f:terminationMessagePolicy: {}
+                  f:volumeMounts:
+                    .: {}
+                    k:{"mountPath":"/home/java/config"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+                    k:{"mountPath":"/home/java/keys"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+                    k:{"mountPath":"/home/java/tmp"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+              f:dnsPolicy: {}
+              f:imagePullSecrets:
+                .: {}
+                k:{"name":"harborcreds"}: {}
+              f:restartPolicy: {}
+              f:schedulerName: {}
+              f:securityContext:
+                .: {}
+                f:fsGroup: {}
+                f:runAsGroup: {}
+                f:runAsUser: {}
+              f:terminationGracePeriodSeconds: {}
+              f:topologySpreadConstraints:
+                .: {}
+                k:{"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}:
+                  .: {}
+                  f:labelSelector: {}
+                  f:maxSkew: {}
+                  f:topologyKey: {}
+                  f:whenUnsatisfiable: {}
+                k:{"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"}:
+                  .: {}
+                  f:labelSelector: {}
+                  f:maxSkew: {}
+                  f:topologyKey: {}
+                  f:whenUnsatisfiable: {}
+              f:volumes:
+                .: {}
+                k:{"name":"app-config"}:
+                  .: {}
+                  f:configMap:
+                    .: {}
+                    f:defaultMode: {}
+                    f:name: {}
+                  f:name: {}
+                k:{"name":"keystores-secrets"}:
+                  .: {}
+                  f:name: {}
+                  f:secret:
+                    .: {}
+                    f:defaultMode: {}
+                    f:secretName: {}
+                k:{"name":"keytab-conf"}:
+                  .: {}
+                  f:name: {}
+                  f:secret:
+                    .: {}
+                    f:defaultMode: {}
+                    f:secretName: {}
+      manager: OpenAPI-Generator
+      operation: Update
+      time: '2024-11-26T16:21:22Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:spec:
+          f:template:
+            f:spec:
+              f:containers:
+                k:{"name":"edgaltscoring"}:
+                  f:env:
+                    .: {}
+                    k:{"name":"STAKATER_APP_CONFIG_CONFIGMAP"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"STAKATER_EDGALTSCORING_SECRET"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"STAKATER_KEYSTORES_SECRETS_SECRET"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"STAKATER_KEYTAB_CONF_SECRET"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+      manager: Reloader
+      operation: Update
+      time: '2024-11-27T11:55:39Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:deployment.kubernetes.io/revision: {}
+        f:status:
+          f:availableReplicas: {}
+          f:conditions:
+            .: {}
+            k:{"type":"Available"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+            k:{"type":"Progressing"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+          f:observedGeneration: {}
+          f:readyReplicas: {}
+          f:replicas: {}
+          f:unavailableReplicas: {}
+          f:updatedReplicas: {}
+      manager: kube-controller-manager
+      operation: Update
+      subresource: status
+      time: '2024-11-27T12:05:42Z'
+  name: edg-alt-scoring-data-deploy
+  namespace: edg-alt-scoring-data-system-dev
+  resourceVersion: '628646813'
+  uid: 7299d51c-4956-4aab-b23b-e7d025b26bde
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: edgaltscoring
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: edgaltscoring
+        environment: dev
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r1
+              weight: 50
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r3
+              weight: 50
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r4
+              weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r1
+                      - r3
+                      - r4
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - edgaltscoring
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      automountServiceAccountToken: false
+      containers:
+        - env:
+            - name: STAKATER_KEYTAB_CONF_SECRET
+              value: 55cd88d594179afe90fa0307b38161ac50a8f6a1
+            - name: STAKATER_KEYSTORES_SECRETS_SECRET
+              value: 6b2913f3753cbf828a06471b5ba5ecba01fcb128
+            - name: STAKATER_APP_CONFIG_CONFIGMAP
+              value: a6269e3e998d20ba459816393daa859cd90097cf
+            - name: STAKATER_EDGALTSCORING_SECRET
+              value: 2bcf966367a824daa64e23f6ba86791bfeaf433d
+          envFrom:
+            - secretRef:
+                name: edgaltscoring
+          image: cms-rpunexus.fnb.co.za/cms/edg-alt-scoring-data:harbourFixes-2
+          imagePullPolicy: Always
+          name: edgaltscoring
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 300m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /home/java/config
+              name: app-config
+              readOnly: true
+            - mountPath: /home/java/tmp
+              name: keytab-conf
+              readOnly: true
+            - mountPath: /home/java/keys
+              name: keystores-secrets
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: harborcreds
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+      terminationGracePeriodSeconds: 30
+      topologySpreadConstraints:
+        - labelSelector:
+            matchLabels:
+              app: edgaltscoring
+          maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+        - labelSelector:
+            matchLabels:
+              app: edgaltscoring
+          maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: app-config
+          name: app-config
+        - name: keytab-conf
+          secret:
+            defaultMode: 420
+            secretName: keytab-conf
+        - name: keystores-secrets
+          secret:
+            defaultMode: 420
+            secretName: keystores-secrets
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: '2024-11-15T20:55:38Z'
+      lastUpdateTime: '2024-11-15T20:55:38Z'
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: Available
+    - lastTransitionTime: '2024-11-27T12:05:42Z'
+      lastUpdateTime: '2024-11-27T12:05:42Z'
+      message: >-
+        ReplicaSet "edg-alt-scoring-data-deploy-754bd84858" has timed out
+        progressing.
+      reason: ProgressDeadlineExceeded
+      status: 'False'
+      type: Progressing
+  observedGeneration: 44
+  readyReplicas: 1
+  replicas: 2
+  unavailableReplicas: 1
+  updatedReplicas: 1

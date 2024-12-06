@@ -1,0 +1,406 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    configmap.reloader.stakater.com/reload: app-config
+    deployment.kubernetes.io/revision: '20'
+    field.cattle.io/publicEndpoints: >-
+      [{"addresses":["172.16.33.68"],"port":443,"protocol":"HTTPS","serviceName":"rcolm-system-stress:rcolm-svc","ingressName":"rcolm-system-stress:rcolm","hostname":"rcolm-stress.cms-k8s-dev.fnb.co.za","path":"/","allNodes":true}]
+    kubectl.kubernetes.io/last-applied-configuration: >-
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"configmap.reloader.stakater.com/reload":"app-config","secret.reloader.stakater.com/reload":"rcolm,keytab-conf,keystores-secrets"},"labels":{"app":"rcolm","environment":"stress"},"name":"rcolm-deploy","namespace":"rcolm-system-stress"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"rcolm"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"rcolm","environment":"stress"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r1"]}]},"weight":50},{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r3"]}]},"weight":50},{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r4"]}]},"weight":50}],"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r1","r3","r4"]}]}]}},"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"app","operator":"In","values":["rcolm"]}]},"topologyKey":"kubernetes.io/hostname"},"weight":100}]}},"automountServiceAccountToken":false,"containers":[{"envFrom":[{"secretRef":{"name":"rcolm"}}],"image":"cms-rpunexus.fnb.co.za/cms/rcol:COLLECTIONS_SEPTEMBER_RELEASE-2","imagePullPolicy":"Always","name":"rcolm","ports":[{"containerPort":8080}],"resources":{"limits":{"cpu":"300m","memory":"1024Mi"},"requests":{"cpu":"300m","memory":"1024Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":false,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000},"volumeMounts":[{"mountPath":"/home/java/config","name":"app-config","readOnly":true},{"mountPath":"/home/java/tmp","name":"keytab-conf","readOnly":true},{"mountPath":"/home/java/keys","name":"keystores-secrets","readOnly":true}]}],"imagePullSecrets":[{"name":"harborcreds"}],"securityContext":{"fsGroup":1000,"runAsGroup":1000,"runAsUser":1000},"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app":"rcolm"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app":"rcolm"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}],"volumes":[{"configMap":{"name":"app-config"},"name":"app-config"},{"name":"keytab-conf","secret":{"secretName":"keytab-conf"}},{"name":"keystores-secrets","secret":{"secretName":"keystores-secrets"}}]}}}}
+    secret.reloader.stakater.com/reload: rcolm,keytab-conf,keystores-secrets
+  creationTimestamp: '2024-10-04T13:51:03Z'
+  generation: 23
+  labels:
+    app: rcolm
+    environment: stress
+  managedFields:
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:configmap.reloader.stakater.com/reload: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+            f:secret.reloader.stakater.com/reload: {}
+          f:labels:
+            .: {}
+            f:app: {}
+            f:environment: {}
+        f:spec:
+          f:progressDeadlineSeconds: {}
+          f:replicas: {}
+          f:revisionHistoryLimit: {}
+          f:selector: {}
+          f:strategy:
+            f:rollingUpdate:
+              .: {}
+              f:maxSurge: {}
+              f:maxUnavailable: {}
+            f:type: {}
+          f:template:
+            f:metadata:
+              f:labels:
+                .: {}
+                f:app: {}
+                f:environment: {}
+            f:spec:
+              f:affinity:
+                .: {}
+                f:nodeAffinity:
+                  .: {}
+                  f:preferredDuringSchedulingIgnoredDuringExecution: {}
+                  f:requiredDuringSchedulingIgnoredDuringExecution: {}
+                f:podAntiAffinity:
+                  .: {}
+                  f:preferredDuringSchedulingIgnoredDuringExecution: {}
+              f:automountServiceAccountToken: {}
+              f:containers:
+                k:{"name":"rcolm"}:
+                  .: {}
+                  f:envFrom: {}
+                  f:image: {}
+                  f:imagePullPolicy: {}
+                  f:name: {}
+                  f:ports:
+                    .: {}
+                    k:{"containerPort":8080,"protocol":"TCP"}:
+                      .: {}
+                      f:containerPort: {}
+                      f:protocol: {}
+                  f:resources:
+                    .: {}
+                    f:limits:
+                      .: {}
+                      f:cpu: {}
+                      f:memory: {}
+                    f:requests:
+                      .: {}
+                      f:cpu: {}
+                      f:memory: {}
+                  f:securityContext:
+                    .: {}
+                    f:allowPrivilegeEscalation: {}
+                    f:capabilities:
+                      .: {}
+                      f:drop: {}
+                    f:privileged: {}
+                    f:readOnlyRootFilesystem: {}
+                    f:runAsGroup: {}
+                    f:runAsNonRoot: {}
+                    f:runAsUser: {}
+                  f:terminationMessagePath: {}
+                  f:terminationMessagePolicy: {}
+                  f:volumeMounts:
+                    .: {}
+                    k:{"mountPath":"/home/java/config"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+                    k:{"mountPath":"/home/java/keys"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+                    k:{"mountPath":"/home/java/tmp"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+              f:dnsPolicy: {}
+              f:imagePullSecrets:
+                .: {}
+                k:{"name":"harborcreds"}: {}
+              f:restartPolicy: {}
+              f:schedulerName: {}
+              f:securityContext:
+                .: {}
+                f:fsGroup: {}
+                f:runAsGroup: {}
+                f:runAsUser: {}
+              f:terminationGracePeriodSeconds: {}
+              f:topologySpreadConstraints:
+                .: {}
+                k:{"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}:
+                  .: {}
+                  f:labelSelector: {}
+                  f:maxSkew: {}
+                  f:topologyKey: {}
+                  f:whenUnsatisfiable: {}
+                k:{"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"}:
+                  .: {}
+                  f:labelSelector: {}
+                  f:maxSkew: {}
+                  f:topologyKey: {}
+                  f:whenUnsatisfiable: {}
+              f:volumes:
+                .: {}
+                k:{"name":"app-config"}:
+                  .: {}
+                  f:configMap:
+                    .: {}
+                    f:defaultMode: {}
+                    f:name: {}
+                  f:name: {}
+                k:{"name":"keystores-secrets"}:
+                  .: {}
+                  f:name: {}
+                  f:secret:
+                    .: {}
+                    f:defaultMode: {}
+                    f:secretName: {}
+                k:{"name":"keytab-conf"}:
+                  .: {}
+                  f:name: {}
+                  f:secret:
+                    .: {}
+                    f:defaultMode: {}
+                    f:secretName: {}
+      manager: OpenAPI-Generator
+      operation: Update
+      time: '2024-10-04T13:51:03Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:spec:
+          f:template:
+            f:spec:
+              f:containers:
+                k:{"name":"rcolm"}:
+                  f:env:
+                    .: {}
+                    k:{"name":"STAKATER_APP_CONFIG_CONFIGMAP"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"STAKATER_KEYSTORES_SECRETS_SECRET"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"STAKATER_KEYTAB_CONF_SECRET"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"STAKATER_RCOLM_SECRET"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+      manager: Reloader
+      operation: Update
+      time: '2024-10-10T07:03:12Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:field.cattle.io/publicEndpoints: {}
+      manager: agent
+      operation: Update
+      time: '2024-11-09T01:26:23Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:deployment.kubernetes.io/revision: {}
+        f:status:
+          f:availableReplicas: {}
+          f:conditions:
+            .: {}
+            k:{"type":"Available"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+            k:{"type":"Progressing"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+          f:observedGeneration: {}
+          f:readyReplicas: {}
+          f:replicas: {}
+          f:updatedReplicas: {}
+      manager: kube-controller-manager
+      operation: Update
+      subresource: status
+      time: '2024-11-15T20:57:12Z'
+  name: rcolm-deploy
+  namespace: rcolm-system-stress
+  resourceVersion: '561756126'
+  uid: 571a0f76-5255-4968-84c0-2f0021eb386b
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: rcolm
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: rcolm
+        environment: stress
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r1
+              weight: 50
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r3
+              weight: 50
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r4
+              weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r1
+                      - r3
+                      - r4
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - rcolm
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      automountServiceAccountToken: false
+      containers:
+        - env:
+            - name: STAKATER_RCOLM_SECRET
+              value: 6feac510077912903b72f70336c09af6a4fd8d2c
+            - name: STAKATER_KEYTAB_CONF_SECRET
+              value: 566b8441425831caf41e34b588ecb542fecb0432
+            - name: STAKATER_APP_CONFIG_CONFIGMAP
+              value: 1378a683689169ae6995d0a561fe233f5a5fc18a
+            - name: STAKATER_KEYSTORES_SECRETS_SECRET
+              value: 23188b7a16abad4d2bd6086e4c18bb8c8f87e449
+          envFrom:
+            - secretRef:
+                name: rcolm
+          image: cms-rpunexus.fnb.co.za/cms/rcol:COLLECTIONS_SEPTEMBER_RELEASE-2
+          imagePullPolicy: Always
+          name: rcolm
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 300m
+              memory: 1Gi
+            requests:
+              cpu: 300m
+              memory: 1Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /home/java/config
+              name: app-config
+              readOnly: true
+            - mountPath: /home/java/tmp
+              name: keytab-conf
+              readOnly: true
+            - mountPath: /home/java/keys
+              name: keystores-secrets
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: harborcreds
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+      terminationGracePeriodSeconds: 30
+      topologySpreadConstraints:
+        - labelSelector:
+            matchLabels:
+              app: rcolm
+          maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+        - labelSelector:
+            matchLabels:
+              app: rcolm
+          maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: app-config
+          name: app-config
+        - name: keytab-conf
+          secret:
+            defaultMode: 420
+            secretName: keytab-conf
+        - name: keystores-secrets
+          secret:
+            defaultMode: 420
+            secretName: keystores-secrets
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: '2024-10-08T10:27:21Z'
+      lastUpdateTime: '2024-10-10T07:03:14Z'
+      message: ReplicaSet "rcolm-deploy-5dbcf89d7c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: 'True'
+      type: Progressing
+    - lastTransitionTime: '2024-11-15T20:57:12Z'
+      lastUpdateTime: '2024-11-15T20:57:12Z'
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: Available
+  observedGeneration: 23
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

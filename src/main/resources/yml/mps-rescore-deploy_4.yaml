@@ -1,0 +1,440 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    configmap.reloader.stakater.com/reload: app-config
+    deployment.kubernetes.io/revision: '2'
+    field.cattle.io/publicEndpoints: >-
+      [{"addresses":["172.16.33.68"],"port":443,"protocol":"HTTPS","serviceName":"mps-rescore-system-stress:mpsrescore-svc","ingressName":"mps-rescore-system-stress:mpsrescore","hostname":"mps-stress.cms-k8s-dev.fnb.co.za","path":"/mps/scoring/rescore","allNodes":true}]
+    kubectl.kubernetes.io/last-applied-configuration: >-
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"configmap.reloader.stakater.com/reload":"app-config","secret.reloader.stakater.com/reload":"keystores-secrets"},"labels":{"app":"mpsrescore","environment":"stress"},"name":"mps-rescore-deploy","namespace":"mps-rescore-system-stress"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"mpsrescore"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"mpsrescore","environment":"stress"}},"spec":{"affinity":{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r1"]}]},"weight":50},{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r3"]}]},"weight":50},{"preference":{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r4"]}]},"weight":50}],"requiredDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"topology.kubernetes.io/zone","operator":"In","values":["r1","r3","r4"]}]}]}},"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"app","operator":"In","values":["mpsrescore"]}]},"topologyKey":"kubernetes.io/hostname"},"weight":100}]}},"automountServiceAccountToken":false,"containers":[{"env":[{"name":"JAVA_TOOL_OPTIONS","value":"-javaagent:/opt/appdynamics/javaagent.jar
+      -Dappdynamics.agent.node.use.as.ephemeral=true"},{"name":"APPDYNAMICS_AGENT_TIER_NAME","value":"mps-rescore-api-stress"},{"name":"APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY","valueFrom":{"secretKeyRef":{"key":"access-key","name":"appd-agent-secret"}}}],"envFrom":[{"configMapRef":{"name":"mps-rescore-api-stress-appd-configmap"}}],"image":"cms-rpunexus.fnb.co.za/cms/mps-rescoreapi:RRC-Nov-2024-V3-3","imagePullPolicy":"Always","name":"mpsrescore","ports":[{"containerPort":8080}],"resources":{"limits":{"cpu":"8000m","memory":"8096Mi"},"requests":{"cpu":"2000m","memory":"8096Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":false,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000},"volumeMounts":[{"mountPath":"/home/java/config","name":"app-config","readOnly":true},{"mountPath":"/home/java/keys","name":"keystores-secrets","readOnly":true},{"mountPath":"/opt/appdynamics","name":"appd-agent-repo"}]}],"imagePullSecrets":[{"name":"harborcreds"}],"initContainers":[{"command":["cp","-r","/opt/appdynamics/.","/opt/temp"],"image":"cms-rpunexus.fnb.co.za/appdynamics/java-agent:24.5.0.36037","name":"appd-agent","volumeMounts":[{"mountPath":"/opt/temp","name":"appd-agent-repo"}]}],"securityContext":{"fsGroup":1000,"runAsGroup":1000,"runAsUser":1000},"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app":"mpsrescore"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app":"mpsrescore"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}],"volumes":[{"emptyDir":{},"name":"appd-agent-repo"},{"configMap":{"name":"app-config"},"name":"app-config"},{"name":"keystores-secrets","secret":{"secretName":"keystores-secrets"}}]}}}}
+    secret.reloader.stakater.com/reload: keystores-secrets
+  creationTimestamp: '2024-11-20T05:46:58Z'
+  generation: 3
+  labels:
+    app: mpsrescore
+    environment: stress
+  managedFields:
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:configmap.reloader.stakater.com/reload: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+            f:secret.reloader.stakater.com/reload: {}
+          f:labels:
+            .: {}
+            f:app: {}
+            f:environment: {}
+        f:spec:
+          f:progressDeadlineSeconds: {}
+          f:replicas: {}
+          f:revisionHistoryLimit: {}
+          f:selector: {}
+          f:strategy:
+            f:rollingUpdate:
+              .: {}
+              f:maxSurge: {}
+              f:maxUnavailable: {}
+            f:type: {}
+          f:template:
+            f:metadata:
+              f:labels:
+                .: {}
+                f:app: {}
+                f:environment: {}
+            f:spec:
+              f:affinity:
+                .: {}
+                f:nodeAffinity:
+                  .: {}
+                  f:preferredDuringSchedulingIgnoredDuringExecution: {}
+                  f:requiredDuringSchedulingIgnoredDuringExecution: {}
+                f:podAntiAffinity:
+                  .: {}
+                  f:preferredDuringSchedulingIgnoredDuringExecution: {}
+              f:automountServiceAccountToken: {}
+              f:containers:
+                k:{"name":"mpsrescore"}:
+                  .: {}
+                  f:env:
+                    .: {}
+                    k:{"name":"APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY"}:
+                      .: {}
+                      f:name: {}
+                      f:valueFrom:
+                        .: {}
+                        f:secretKeyRef: {}
+                    k:{"name":"APPDYNAMICS_AGENT_TIER_NAME"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"JAVA_TOOL_OPTIONS"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                  f:envFrom: {}
+                  f:image: {}
+                  f:imagePullPolicy: {}
+                  f:name: {}
+                  f:ports:
+                    .: {}
+                    k:{"containerPort":8080,"protocol":"TCP"}:
+                      .: {}
+                      f:containerPort: {}
+                      f:protocol: {}
+                  f:resources:
+                    .: {}
+                    f:limits:
+                      .: {}
+                      f:cpu: {}
+                      f:memory: {}
+                    f:requests:
+                      .: {}
+                      f:cpu: {}
+                      f:memory: {}
+                  f:securityContext:
+                    .: {}
+                    f:allowPrivilegeEscalation: {}
+                    f:capabilities:
+                      .: {}
+                      f:drop: {}
+                    f:privileged: {}
+                    f:readOnlyRootFilesystem: {}
+                    f:runAsGroup: {}
+                    f:runAsNonRoot: {}
+                    f:runAsUser: {}
+                  f:terminationMessagePath: {}
+                  f:terminationMessagePolicy: {}
+                  f:volumeMounts:
+                    .: {}
+                    k:{"mountPath":"/home/java/config"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+                    k:{"mountPath":"/home/java/keys"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+                      f:readOnly: {}
+                    k:{"mountPath":"/opt/appdynamics"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+              f:dnsPolicy: {}
+              f:imagePullSecrets:
+                .: {}
+                k:{"name":"harborcreds"}: {}
+              f:initContainers:
+                .: {}
+                k:{"name":"appd-agent"}:
+                  .: {}
+                  f:command: {}
+                  f:image: {}
+                  f:imagePullPolicy: {}
+                  f:name: {}
+                  f:resources: {}
+                  f:terminationMessagePath: {}
+                  f:terminationMessagePolicy: {}
+                  f:volumeMounts:
+                    .: {}
+                    k:{"mountPath":"/opt/temp"}:
+                      .: {}
+                      f:mountPath: {}
+                      f:name: {}
+              f:restartPolicy: {}
+              f:schedulerName: {}
+              f:securityContext:
+                .: {}
+                f:fsGroup: {}
+                f:runAsGroup: {}
+                f:runAsUser: {}
+              f:terminationGracePeriodSeconds: {}
+              f:topologySpreadConstraints:
+                .: {}
+                k:{"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}:
+                  .: {}
+                  f:labelSelector: {}
+                  f:maxSkew: {}
+                  f:topologyKey: {}
+                  f:whenUnsatisfiable: {}
+                k:{"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"}:
+                  .: {}
+                  f:labelSelector: {}
+                  f:maxSkew: {}
+                  f:topologyKey: {}
+                  f:whenUnsatisfiable: {}
+              f:volumes:
+                .: {}
+                k:{"name":"app-config"}:
+                  .: {}
+                  f:configMap:
+                    .: {}
+                    f:defaultMode: {}
+                    f:name: {}
+                  f:name: {}
+                k:{"name":"appd-agent-repo"}:
+                  .: {}
+                  f:emptyDir: {}
+                  f:name: {}
+                k:{"name":"keystores-secrets"}:
+                  .: {}
+                  f:name: {}
+                  f:secret:
+                    .: {}
+                    f:defaultMode: {}
+                    f:secretName: {}
+      manager: OpenAPI-Generator
+      operation: Update
+      time: '2024-11-20T05:46:58Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:field.cattle.io/publicEndpoints: {}
+      manager: agent
+      operation: Update
+      time: '2024-11-20T05:46:59Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:spec:
+          f:template:
+            f:spec:
+              f:containers:
+                k:{"name":"mpsrescore"}:
+                  f:env:
+                    k:{"name":"STAKATER_KEYSTORES_SECRETS_SECRET"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+      manager: Reloader
+      operation: Update
+      time: '2024-11-20T05:49:18Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:deployment.kubernetes.io/revision: {}
+        f:status:
+          f:availableReplicas: {}
+          f:conditions:
+            .: {}
+            k:{"type":"Available"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+            k:{"type":"Progressing"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+          f:observedGeneration: {}
+          f:readyReplicas: {}
+          f:replicas: {}
+          f:updatedReplicas: {}
+      manager: kube-controller-manager
+      operation: Update
+      subresource: status
+      time: '2024-11-20T05:51:01Z'
+  name: mps-rescore-deploy
+  namespace: mps-rescore-system-stress
+  resourceVersion: '586838950'
+  uid: b7ba0085-c271-44e0-b5ce-f18d4cdc55b9
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: mpsrescore
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mpsrescore
+        environment: stress
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r1
+              weight: 50
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r3
+              weight: 50
+            - preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r4
+              weight: 50
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - r1
+                      - r3
+                      - r4
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - mpsrescore
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      automountServiceAccountToken: false
+      containers:
+        - env:
+            - name: JAVA_TOOL_OPTIONS
+              value: >-
+                -javaagent:/opt/appdynamics/javaagent.jar
+                -Dappdynamics.agent.node.use.as.ephemeral=true
+            - name: APPDYNAMICS_AGENT_TIER_NAME
+              value: mps-rescore-api-stress
+            - name: APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: access-key
+                  name: appd-agent-secret
+            - name: STAKATER_KEYSTORES_SECRETS_SECRET
+              value: 3cc192b531d963f2d0cda288f05fe95743b85e98
+          envFrom:
+            - configMapRef:
+                name: mps-rescore-api-stress-appd-configmap
+          image: cms-rpunexus.fnb.co.za/cms/mps-rescoreapi:RRC-Nov-2024-V3-3
+          imagePullPolicy: Always
+          name: mpsrescore
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              cpu: '8'
+              memory: 8096Mi
+            requests:
+              cpu: '2'
+              memory: 8096Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /home/java/config
+              name: app-config
+              readOnly: true
+            - mountPath: /home/java/keys
+              name: keystores-secrets
+              readOnly: true
+            - mountPath: /opt/appdynamics
+              name: appd-agent-repo
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: harborcreds
+      initContainers:
+        - command:
+            - cp
+            - '-r'
+            - /opt/appdynamics/.
+            - /opt/temp
+          image: cms-rpunexus.fnb.co.za/appdynamics/java-agent:24.5.0.36037
+          imagePullPolicy: IfNotPresent
+          name: appd-agent
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /opt/temp
+              name: appd-agent-repo
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+      terminationGracePeriodSeconds: 30
+      topologySpreadConstraints:
+        - labelSelector:
+            matchLabels:
+              app: mpsrescore
+          maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+        - labelSelector:
+            matchLabels:
+              app: mpsrescore
+          maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+      volumes:
+        - emptyDir: {}
+          name: appd-agent-repo
+        - configMap:
+            defaultMode: 420
+            name: app-config
+          name: app-config
+        - name: keystores-secrets
+          secret:
+            defaultMode: 420
+            secretName: keystores-secrets
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: '2024-11-20T05:51:01Z'
+      lastUpdateTime: '2024-11-20T05:51:01Z'
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: Available
+    - lastTransitionTime: '2024-11-20T05:46:59Z'
+      lastUpdateTime: '2024-11-20T05:51:01Z'
+      message: ReplicaSet "mps-rescore-deploy-5dd9d5cdb6" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: 'True'
+      type: Progressing
+  observedGeneration: 3
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
