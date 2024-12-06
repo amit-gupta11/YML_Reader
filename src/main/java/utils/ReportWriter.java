@@ -28,8 +28,8 @@ public class ReportWriter {
         }
     }
     public static void jsonToCsv(){
-        String inputFile = "target/result/app_config_json.txt"; // input .txt file containing JSON data
-        String outputFile = "target/result/app_config_json.csv"; // output .csv file
+        String inputFile = "target/result/app_config_json.txt";
+        String outputFile = "target/result/app_config_json.csv";
         try {
             String jsonData = readFile(inputFile);
             ObjectMapper objectMapper = new ObjectMapper();
