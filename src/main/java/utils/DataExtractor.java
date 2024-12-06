@@ -54,6 +54,11 @@ public class DataExtractor {
         return extractData(requestData, key);
     }
 
+    public static double calculateClusterUsage(double cores) {
+        int totalCore = Integer.parseInt(PropertyReader.getProperty("rancher.cores"));
+        return (cores / totalCore ) * 100;
+    }
+
     public static double calculateCoreUsage(String cpuValue, int replicas) {
         if (cpuValue == null) cpuValue = "0";
         double cpuInCores = cpuValue.endsWith("m")
@@ -94,17 +99,20 @@ public class DataExtractor {
                 String cpu = getCPUValue((Map<String, Object>) request);
                 String tempMemory = (String) getKeyValue((Map<String, Object>) request, "memory");
                 String memory = convertMemoryToGi(tempMemory);
+                double cores= calculateCoreUsage((String) cpuUsage, (Integer) replicas);
+                String clusterUsage =  String.format("%.1f", calculateClusterUsage(cores)) + "%";
 
                 String cpuPercentage = String.format("%.2f", getPercentage(cpu, totalCPU)) + "%";
                 String memoryPercentage = String.format("%.2f", getPercentage(memory, totalMemory)) + "%";
-                String formattedString = String.format("{\"app\" : \"%s\",\"env\" : \"%s\",\"cpu\" : \"%s\",\"memory\" : \"%s\",\"cpuPercentage\" : \"%s\",\"memoryPercentage\" : \"%s\"}",
-                        appName, env, cpu, memory, cpuPercentage, memoryPercentage);
+                String formattedString = String.format("{\"app\" : \"%s\",\"env\" : \"%s\",\"cpu\" : \"%s\",\"memory\" : \"%s\",\"cpuPercentage\" : \"%s\",\"memoryPercentage\" : \"%s\",\"cores\" : \"%s\",\"clusterUsage\" : \"%s\"}",
+                        appName, env, cpu, memory, cpuPercentage, memoryPercentage,cores,clusterUsage);
 
                 outputStrings.add(formattedString);
 
                 System.out.printf("App Name: %s, Environment Name: %s, CPU Requested: %s, Memory Requested: %s%n", appName, env, cpu, memory);
                 System.out.printf("Replicas: %s%n", replicas);
                 System.out.printf("Cores : %s%n", calculateCoreUsage((String) cpuUsage, (Integer) replicas));
+                System.out.printf("Cluster : %s%n", clusterUsage);
                 System.out.printf("CPU usage : %s%n", cpuPercentage);
                 System.out.printf("Memory usage : %s%n", memoryPercentage);
                 System.out.println("-----------------------------------------------------------------------------------------");
