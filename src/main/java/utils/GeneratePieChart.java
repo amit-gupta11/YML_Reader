@@ -5,9 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.PieToolTipGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.ui.RectangleInsets;
 import org.jfree.data.general.DefaultPieDataset;
@@ -162,12 +160,10 @@ public class GeneratePieChart {
     private static void customizePieChart(JFreeChart chart) {
         PiePlot<?> plot = (PiePlot<?>) chart.getPlot();
 
-        // Set section colors
         plot.setSectionPaint("Category 1", new Color(79, 129, 189));
         plot.setSectionPaint("Category 2", new Color(192, 80, 77));
         plot.setSectionPaint("Category 3", new Color(155, 187, 89));
 
-        // Configure label properties
         plot.setLabelFont(new Font("Arial", Font.BOLD, 14));
         plot.setLabelPaint(Color.BLACK);
         plot.setLabelGap(0.02);
@@ -179,35 +175,19 @@ public class GeneratePieChart {
                 new DecimalFormat("0.00")
         ));
 
-        // Adjust shadow settings for better visibility
         plot.setShadowPaint(new Color(150, 150, 150));
         plot.setShadowXOffset(4);
         plot.setShadowYOffset(4);
-
-        // Enhance section outline visibility
         plot.setSectionOutlinesVisible(true);
-        // Adjust the layout of the pie chart
         plot.setInteriorGap(0.02);
         plot.setCircular(true);
-
-        // Remove plot background for a cleaner look
         plot.setBackgroundPaint(Color.WHITE);
-
-        // Add chart border for definition
         chart.setBorderVisible(true);
         chart.setBorderPaint(Color.GRAY);
-
-        // Add chart background color
         chart.setBackgroundPaint(Color.WHITE);
-
-        // Add optional insets for better padding
         plot.setInsets(new RectangleInsets(10.0, 10.0, 10.0, 10.0));
 
-        // Optionally add anti-aliasing for smoother rendering
         chart.setAntiAlias(true);
-
-        // Add explanatory comments for clarity
-        // This method configures the visual appearance of a pie chart, focusing on aesthetics and legibility.
     }
 
 }
